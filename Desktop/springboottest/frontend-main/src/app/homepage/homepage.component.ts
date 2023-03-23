@@ -82,14 +82,26 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  createReply(postId: number, reply: Reply): void {
-    this.postService.createReply(postId, reply).subscribe((newReply: Reply) => {
-      const postIndex = this.posts.findIndex((post) => post.id === postId);
-      if (postIndex !== -1) {
-        this.posts[postIndex].replies.push(newReply);
+  createReply(postId: number, userName: string, title: string, postText: string, image: string | null) {
+    const reply: Reply = {
+      id: 0, // This will be replaced by the server-generated ID
+      tweetId: postId,
+      userName: userName,
+      title: title,
+      postText: postText,
+      image: image,
+      date: new Date().toISOString(),
+    };
+
+    this.postService.createReply(postId, userName, title, postText, image).subscribe((newReply: Reply) => {
+      // Find the post in the list and add the new reply to its replies array
+      const post = this.posts.find((post) => post.id === postId);
+      if (post) {
+        post.replies.push(newReply);
       }
     });
   }
+
 
   updateReply(postId: number, reply: Reply): void {
     this.postService.updateReply(postId, reply.id, reply).subscribe((updatedReply: Reply) => {

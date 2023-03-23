@@ -29,9 +29,22 @@ export class PostService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  createReply(postId: number, reply: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${postId}/replies`, reply);
+
+  createReply(postId: number, userName: string, title: string, postText: string, image: string | null): Observable<Reply> {
+    const newReply: Reply = {
+      id: 0, // Assuming the server will assign a proper ID
+      tweetId: postId,
+      userName: userName,
+      title: title,
+      postText: postText,
+      image: image,
+      date: new Date().toISOString(),
+    };
+
+    return this.http.post<Reply>(`http://localhost:3000/api/posts/${postId}/replies`, newReply);
   }
+
+
 
   updateReply(postId: number, replyId: number, reply: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${postId}/replies/${replyId}`, reply);
