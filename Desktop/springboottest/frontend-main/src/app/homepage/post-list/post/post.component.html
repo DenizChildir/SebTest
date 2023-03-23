@@ -1,0 +1,37 @@
+
+<div class="post">
+
+  <h3>{{ post.userName}}</h3>
+  <h3>{{ post.title }}</h3>
+  <p>{{ post.postText }}</p>
+  <div *ngIf="post.image">
+    <img [src]="post.image" alt="Post image" class="post-image" />
+  </div>
+  <p>{{ post.date | date: 'medium' }}</p>
+  <button class="delete-button" (click)="onDeletePost()">Delete Post</button>
+  <div class="replies" *ngIf="post.replies && post.replies.length > 0">
+    <!-- Other post content -->
+
+    <form (ngSubmit)="onSubmitReply(replyInput.value)" #replyForm="ngForm">
+      <input type="text" ngModel #replyInput="ngModel" name="reply" placeholder="Write your reply..." required />
+      <button type="submit" [disabled]="!replyForm.form.valid">Reply</button>
+    </form>
+
+    <!-- Display replies -->
+    <app-reply *ngFor="let reply of post.replies" [reply]="reply" (deleteReplyEvent)="onDeleteReply(reply.id)"></app-reply>
+
+  </div>
+</div>
+
+
+
+<!--<div class="post">-->
+<!--  <h3>{{ post.userName }} - {{ post.title }}</h3>-->
+<!--  <p>{{ post.postText }}</p>-->
+<!--  <img *ngIf="post.image" [src]="post.image" alt="Post Image" />-->
+<!--  <p>{{ post.date | date: 'medium' }}</p>-->
+<!--  <div class="replies" *ngIf="post.replies && post.replies.length > 0">-->
+<!--    <h4>Replies</h4>-->
+<!--    <app-reply *ngFor="let reply of post.replies" [reply]="reply"></app-reply>-->
+<!--  </div>-->
+<!--</div>-->
