@@ -7,10 +7,13 @@
     <img [src]="post.image" alt="Post image" class="post-image" />
   </div>
   <p>{{ post.date | date: 'medium' }}</p>
-  <button class="delete-button" (click)="onDeletePost()">Delete Post</button>
+  <div class="delete-button-container"> <!-- Add this div -->
+    <button class="delete-button" (click)="onDeletePost()">Delete Post</button>
+  </div>
   <div class="replies" *ngIf="post.replies && post.replies.length > 0">
     <!-- Other post content -->
   </div>
+  <button class="delete-button" (click)="onDeletePost()">Delete Post</button>
   <!-- Add the class "reply-form" to the form element -->
   <form class="reply-form" (ngSubmit)="onSubmitReply(replyUserName.value, replyTitle.value, replyPostText.value, replyImage.files && replyImage.files.length > 0 ? replyImage.files[0] : null)" #replyForm="ngForm">
     <input type="text" ngModel #replyUserName="ngModel" name="userName" placeholder="Enter your name..." required />
@@ -19,13 +22,9 @@
     <input type="file" (change)="onFileSelected($event)" #replyImage />
     <button type="submit" [disabled]="!replyForm.form.valid">Reply</button>
   </form>
-
-
   <!-- Display replies -->
   <app-reply *ngFor="let reply of post.replies" [reply]="reply" (deleteReplyEvent)="onDeleteReply(reply.id)"></app-reply>
 </div>
-
-
 
 
 <!--<div class="post">-->
